@@ -44,11 +44,11 @@ public class ContactoController {
 
     // Actualização parcial; put é usado em actualizações totais
     @PatchMapping("{id}/favorito")
-    public void favorite( @PathVariable Integer id,
-                          @RequestBody Boolean favorito ) {
+    public void favorite( @PathVariable Integer id ) {
         Optional<Contacto> optionalContacto = contactoRepository.findById(id);
         optionalContacto.ifPresent( contacto -> {
-                    contacto.setFavorito(favorito);
+                    boolean favorito = contacto.getFavorito() == Boolean.TRUE;
+                    contacto.setFavorito(!favorito);
                     contactoRepository.save(contacto);
                 });
     } // End patch - favorite
