@@ -4,15 +4,7 @@ import com.github.anmv921.agendaapi.model.repository.ContactoRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,12 +12,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/contactos")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class ContactoController {
 
     // Injeção de dependência - precisa de keyword final e um
     // construtor - criado por @RequiredArgsConstructor do lombok
     private final ContactoRepository contactoRepository;
-
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Contacto save(
@@ -42,7 +34,6 @@ public class ContactoController {
 
     @GetMapping
     public List<Contacto> list() {
-
         return contactoRepository.findAll();
     }
 
