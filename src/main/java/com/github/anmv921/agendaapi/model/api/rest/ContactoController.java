@@ -2,10 +2,14 @@ package com.github.anmv921.agendaapi.model.api.rest;
 import com.github.anmv921.agendaapi.model.entity.Contacto;
 import com.github.anmv921.agendaapi.model.repository.ContactoRepository;
 
+import jakarta.servlet.http.Part;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,5 +56,24 @@ public class ContactoController {
                     contactoRepository.save(contacto);
                 });
     } // End patch - favorite
+
+    @PutMapping("{id}/foto")
+    public byte[] addPhoto( @PathVariable Integer id,
+                            @RequestParam("foto") Part arquivo ) {
+        Optional<Contacto> contato = contactoRepository.findById(id);
+        return contato.map( c -> {
+           try {
+               InputStream is = arquivo.getInputStream();
+               byte[] bytes = new byte[(int)arquivo.getSize()];
+               IOUtils.readFully(is, bytes);
+               c.setFoto(bytes);
+               contactoRepository.save(c);
+               is.close();
+               return bytes;
+           } catch(IOException e) {
+                return null;
+           }
+        }).orElse(null);
+    } // End addPhoto
 
 } // End ContactoController
