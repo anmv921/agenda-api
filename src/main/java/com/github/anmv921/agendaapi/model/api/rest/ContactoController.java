@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PatchMapping;
 
@@ -29,19 +28,27 @@ public class ContactoController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Contacto save( @RequestBody Contacto in_contacto) {
+    public Contacto save(
+            @RequestBody Contacto in_contacto) {
         return contactoRepository.save(in_contacto);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("{id}")
     public void deletar( @PathVariable Integer id ) {
+
         contactoRepository.deleteById(id);
     }
 
     @GetMapping
     public List<Contacto> list() {
+
         return contactoRepository.findAll();
+    }
+
+    @GetMapping("{id}")
+    public Optional<Contacto> obterContactoPorId ( @PathVariable Integer id ) {
+        return contactoRepository.findById(id);
     }
 
     // Actualização parcial; put é usado em actualizações totais
@@ -49,12 +56,10 @@ public class ContactoController {
     public void favorite( @PathVariable Integer id,
                           @RequestBody Boolean favorito ) {
         Optional<Contacto> optionalContacto = contactoRepository.findById(id);
-        optionalContacto.ifPresent(
-                contacto -> {
+        optionalContacto.ifPresent( contacto -> {
                     contacto.setFavorito(favorito);
                     contactoRepository.save(contacto);
-                }
-        );
+                });
     } // End patch - favorite
 
-}
+} // End ContactoController

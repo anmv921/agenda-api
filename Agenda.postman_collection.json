@@ -1,0 +1,70 @@
+{
+	"info": {
+		"_postman_id": "74fbc30b-b1e2-43e8-8fe3-f64d30ce79bf",
+		"name": "Agenda",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "31556302"
+	},
+	"item": [
+		{
+			"name": "GetAllContacts",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "PostContacto",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"nome\": \"Paulie Galtieri\",\r\n        \"email\": \"paulie-walnuts@email.br\",\r\n        \"favorito\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/contactos"
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteContacto",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "PatchContactFavorito",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"favorito\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/contactos/1/favorito"
+			},
+			"response": []
+		},
+		{
+			"name": "GetContactById",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

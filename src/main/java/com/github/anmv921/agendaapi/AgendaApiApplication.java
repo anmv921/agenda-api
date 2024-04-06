@@ -14,6 +14,7 @@ public class AgendaApiApplication {
 
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(AgendaApiApplication.class, args);
 	}
 
