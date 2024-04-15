@@ -5,6 +5,8 @@ import com.github.anmv921.agendaapi.model.repository.ContactoRepository;
 import jakarta.servlet.http.Part;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,8 +39,12 @@ public class ContactoController {
     }
 
     @GetMapping
-    public List<Contacto> list() {
-        return contactoRepository.findAll();
+    public Page<Contacto> list(
+            @RequestParam(value = "page", defaultValue = "0" ) Integer pagina,
+            @RequestParam(value = "size", defaultValue = "10") Integer tamanhoPagina
+    ) {
+        PageRequest pageRequest = PageRequest.of(pagina, tamanhoPagina);
+        return contactoRepository.findAll(pageRequest);
     }
 
     @GetMapping("{id}")
@@ -59,17 +65,17 @@ public class ContactoController {
 
     @PutMapping("{id}/foto")
     public byte[] addPhoto( @PathVariable Integer id,
-                            @RequestParam("foto") Part arquivo ) {
+                            @RequestParam("foto") Part partArquivo ) {
         Optional<Contacto> contato = contactoRepository.findById(id);
         return contato.map( c -> {
            try {
-               InputStream is = arquivo.getInputStream();
-               byte[] bytes = new byte[(int)arquivo.getSize()];
-               IOUtils.readFully(is, bytes);
-               c.setFoto(bytes);
+               InputStream inputStream = partArquivo.getInputStream();
+               byte[] arr_bytes = new byte[ (int)partArquivo.getSize() ];
+               IOUtils.readFully(inputStream, arr_bytes);
+               c.setFoto(arr_bytes);
                contactoRepository.save(c);
-               is.close();
-               return bytes;
+               inputStream.close();
+               return arr_bytes;
            } catch(IOException e) {
                 return null;
            }
